@@ -62,7 +62,6 @@ function runSearch() {
         "Add Department",
         "Add Role",
         "Add Employee",
-        "Update Employee Role"
       ],
     })
     .then(function (answer) {
@@ -139,11 +138,11 @@ function addDepartment() {
       .then((answer) => {
         console.log('I got here 2');
         connection.query(
-          'INSERT INTO department SET ?',
-          { department_name: answer.departmentName },
+          'INSERT INTO roles SET ?',
+          { title_name: answer.titleName },
           function (err) {
             if (err) throw err;
-            console.log('Department added successfully');
+            console.log('Role added successfully');
             runSearch();
           }
         );
@@ -164,11 +163,11 @@ function addDepartment() {
       .then((answer) => {
         console.log('I got here 3');
         connection.query(
-          'INSERT INTO department SET ?',
-          { department_name: answer.departmentName },
+          'INSERT INTO employees SET ?',
+          { first_name: answer.employeesName },
           function (err) {
             if (err) throw err;
-            console.log('Department added successfully');
+            console.log('Employee added successfully');
             runSearch();
           }
         );

@@ -102,7 +102,6 @@ function runSearch() {
 //////////////////////////
 //Add Departments
 function addDepartment() {
-    console.log('I got here 1');
     inquirer
       .prompt({
         type: 'input',
@@ -111,7 +110,6 @@ function addDepartment() {
       })
   
       .then((answer) => {
-        console.log('I got here 1');
         connection.query(
           'INSERT INTO department SET ?',
           { department_name: answer.departmentName },
@@ -127,66 +125,85 @@ function addDepartment() {
   //////////////////////////
   //Add Role
   function addRole() {
-    console.log('I got here 2');
     inquirer
-      .prompt({
-        type: 'input',
-        name: 'roleName',
-        message: 'Enter the name of the "Role" you want to add: ',
-      })
-  
-      .then((answer) => {
-        console.log('I got here 2');
-        connection.query(
+    .prompt([
+        {
+            type: 'input',
+            name: 'roleName',
+            message: 'Enter the role you want to add: '
+        },
+        {
+          type: 'input',
+          name: 'salary',
+          message: 'Enter the salary for the role you added: '
+        },
+        {
+          type: 'input',
+          name: 'departmentID',
+          message: 'Enter the department ID for the role you added: '
+        }
+      ])
+
+  .then((answer) => {
+      connection.query(
           'INSERT INTO roles SET ?',
-          { title_name: answer.titleName },
-          function (err) {
-            if (err) throw err;
-            console.log('Role added successfully');
-            runSearch();
-          }
-        );
-      });
-  }
+          {title: answer.roleName,
+           salary: answer.salary,
+           department_id: answer.departmentID
+          },
+      function(err){
+          if(err) throw err;
+          console.log('Role added successfully');
+          runSearch();
+      }
+      )
+  })
+}
   
   //////////////////////////
   //Add Employee
   function addEmployee() {
     console.log('I got here 3');
     inquirer
-      .prompt({
-        type: 'input',
-        name: 'employeeName',
-        message: 'Enter the name of the "Employee" you want to add: ',
-      })
-  
-      .then((answer) => {
-        console.log('I got here 3');
-        connection.query(
+    .prompt([
+        {
+            type: 'input',
+            name: 'firstName',
+            message: "Enter the employee's first name: "
+        },
+        {
+          type: 'input',
+          name: 'lastName',
+          message: "Enter the employee's last name: "
+        },
+        {
+          type: 'input',
+          name: 'roleID',
+          message: "Enter the employee's role id: "
+        },
+        {
+          type: 'input',
+          name: 'managID',
+          message: "Enter the employee's manager's id: "
+        }
+      ])
+
+  .then((answer) => {
+      connection.query(
           'INSERT INTO employees SET ?',
-          { first_name: answer.employeesName },
-          function (err) {
-            if (err) throw err;
-            console.log('Employee added successfully');
-            runSearch();
-          }
-        );
-      });
-  }
-  
-  //////////////////////////
-  //View Departments
-  const viewDepartments = () => {
-    const query = "SELECT * from department";
-    connection.query(query, (err, res) => {
-      if (err) throw err;
-      console.log('\n');
-      console.log('VIEW DEPARTMENTS');
-      console.log('\n');
-      console.table(res);
-      runSearch();
-    })
-  };
+          {first_name: answer.firstName,
+           last_name: answer.lastName,
+           role_id: answer.roleID,
+           manager_id: answer.managID
+          },
+      function(err){
+          if(err) throw err;
+          console.log('Employee added successfully');
+          runSearch();
+      }
+      )
+  })
+}
   
   
   
